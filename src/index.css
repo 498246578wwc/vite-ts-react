@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-bg: theme(colors.white);
+  --color-text: theme(colors.gray.800);
+}
+
+.dark {
+  --color-bg: theme(colors.gray.900);
+  --color-text: theme(colors.gray.100);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-menu .ant-menu-item {
+  font-size: 16px; /* 调整字体大小 */
+
+}
+
+/* 如需调整子菜单标题 */
+.custom-menu .ant-menu-submenu-title {
+  font-size: 16px;
+}
+
