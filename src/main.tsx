@@ -9,10 +9,7 @@ import ThemeSwitcher from '@/components/ThemeSwitcher'
 import { routes } from '@/router/routes.tsx'
 
 const AppRoute = () => {
-
-  return (
-    <RouterProvider router={createBrowserRouter(routes)} />
-  )
+  return <RouterProvider router={createBrowserRouter(routes)} />
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

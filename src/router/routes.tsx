@@ -32,12 +32,11 @@ const routeConfig: RouteConfig[] = [
   },
   {
     path: '/loginTest',
-    element: lazy(() => import('@/pages/LoginTest')),
+    element: lazy(() => import('@/pages/Login/components/loginTest.tsx')),
   },
   {
     path: '/*',
     element: lazy(() => import('@/components/NotFound')),
   },
 ]
-
 export const routes = buildRoutes(routeConfig)

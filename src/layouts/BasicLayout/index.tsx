@@ -1,6 +1,6 @@
 import { Breadcrumb, Menu, MenuProps } from 'antd'
-import { motion } from 'framer-motion'
 import { Outlet } from 'react-router'
+import { animated, useSpring } from 'react-spring'
 
 import getAntdIcon from '@/components/AntdIcon'
 import LayoutHeader from '@/layouts/BasicLayout/components/LayoutHeader'
@@ -48,7 +48,7 @@ const BasicLayout = () => {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [collapsed])
 
   type MenuItem = Required<MenuProps>['items'][number]
 
@@ -92,14 +92,26 @@ const BasicLayout = () => {
   const onClick: MenuProps['onClick'] = ({ key }) => {
     navigate(key)
   }
+
+  // 使用 useSpring 来实现侧边栏动画
+  const sidebarSpring = useSpring({
+    width: collapsed ? 256 : 80,
+    config: { mass: 1, tension: 300, friction: 30 },
+  })
+
+  // 使用 useSpring 来实现主内容区动画
+  const contentSpring = useSpring({
+    opacity: 1,
+    from: { opacity: 0 },
+    config: { duration: 500 },
+  })
+
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
       {/* 侧边栏 */}
-      <motion.div
+      <animated.div
         className={`shadow-lg flex flex-col ${collapsed ? 'w-64' : 'w-20'} bg-white dark:bg-gray-900`}
-        initial={{ width: 256 }}
-        animate={{ width: collapsed ? 256 : 80 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        style={sidebarSpring}
       >
         <div className="p-4">
           <strong className="text-2xl text-gray-800 dark:text-gray-100">Logo</strong>
@@ -117,14 +129,10 @@ const BasicLayout = () => {
             mode={collapsed ? 'inline' : 'vertical'}
           />
         </div>
-      </motion.div>
+      </animated.div>
 
       {/* 主内容区 */}
-      <motion.div
-        className="flex-1 overflow-auto no-scrollbar bg-gray-100 dark:bg-gray-700"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
+      <animated.div className="flex-1 overflow-auto no-scrollbar bg-gray-100 dark:bg-gray-700" style={contentSpring}>
         <LayoutHeader />
 
         <div className="p-4">
@@ -147,17 +155,16 @@ const BasicLayout = () => {
             />
           </div>
 
-          <motion.div
+          <animated.div
             className="grid gap-1 md:grid-cols-1 lg:grid-cols-1"
-            variants={bounceVariants}
-            initial="initial"
-            animate="animate"
+            /*@ts-expect-error */
+            style={bounceVariants}
             key={location.pathname} // 路由变化时会触发动画
           >
             <Outlet />
-          </motion.div>
+          </animated.div>
         </div>
-      </motion.div>
+      </animated.div>
     </div>
   )
 }

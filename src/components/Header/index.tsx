@@ -9,7 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = (props) => {
   const toggleTheme = useThemeStore((state) => state.toggleTheme)
   return (
-    <animated.header {...props}>
+    <animated.header style={props}>
       <div className="flex justify-end items-center">
         <animated.div className="flex items-center space-x-4">
           <Button type="text" shape="circle" icon={<MoonFilled />} onClick={toggleTheme} />

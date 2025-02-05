@@ -4,11 +4,6 @@ const HomePage = () => {
   return (
     <>
       <StatisticGroup />
-      {/*<Row className={'py-5'}>*/}
-      {/*  /!*<Col>*/}
-      {/*    <DemoLine />*/}
-      {/*  </Col>*!/*/}
-      {/*</Row>*/}
     </>
   )
 }

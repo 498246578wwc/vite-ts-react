@@ -15,10 +15,10 @@ const StatisticGroup = () => {
           lg={{ flex: '46%' }}
           xl={{ flex: '23%' }}
         >
-          <div className="p-8 rounded-lg bg-linear-210 from-purple-700 to-pink-600">
+          <div className="p-8 rounded-lg bg-linear-to-r from-cyan-600 to-blue-900">
             <Statistic
-              title={<span className="text-white">总销量</span>}
-              value={65433}
+              title={<span className="text-white">总客户</span>}
+              value={34555}
               precision={2}
               valueStyle={{ color: '#fff', fontWeight: '700' }}
               formatter={formatter}
@@ -33,10 +33,10 @@ const StatisticGroup = () => {
           lg={{ flex: '46%' }}
           xl={{ flex: '23%' }}
         >
-          <div className="p-8 rounded-lg bg-linear-to-r from-cyan-600 to-blue-900">
+          <div className="p-8 rounded-lg bg-linear-210 from-purple-700 to-pink-600">
             <Statistic
-              title={<span className="text-white">总客户</span>}
-              value={34555}
+              title={<span className="text-white">总销量</span>}
+              value={65433}
               precision={2}
               valueStyle={{ color: '#fff', fontWeight: '700' }}
               formatter={formatter}
