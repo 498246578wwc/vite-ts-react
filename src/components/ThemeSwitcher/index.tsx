@@ -1,64 +1,86 @@
 // ThemeSwitcher.tsx
-import { ConfigProvider } from 'antd'
-import { theme } from 'antd'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react';
+import { ConfigProvider, theme as antdTheme } from 'antd';
 
-// Ant Design 主题配置
-const lightTheme = {
-  algorithm: theme.defaultAlgorithm,
+// 类型定义
+type AntdThemeConfig = React.ComponentProps<typeof ConfigProvider>['theme'];
+
+// 主题配置工厂函数
+const createThemeConfig = (isDark: boolean): AntdThemeConfig => ({
+  algorithm: isDark ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
   token: {
     colorPrimary: '#4f39f6',
-    colorBgContainer: '#ffffff', // 与 Tailwind 背景色保持一致
+    colorInfo: '#004cffeb',
+    wireframe: false,
+    colorBgContainer: isDark ? '#101828' : '#ffffff',
   },
-}
-
-const darkTheme = {
-  algorithm: theme.darkAlgorithm,
-  token: {
-    colorPrimary: '#4f39f6',
-    colorBgContainer: '#101828', // 与 Tailwind 暗色背景一致
+  components: {
+    Button: {
+      colorPrimary: '#4f39f6', // 组件级主题覆盖示例
+    },
   },
-}
+});
 
-const ThemeSwitcher: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const { theme, systemTheme } = useThemeStore()
-  const currentTheme = theme === 'system' ? systemTheme : theme
-
-  // 动态 CSS 过渡效果
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
+// 动态过渡样式（优化版）
+const useSmoothTransition = () => {
   useEffect(() => {
-    const style = document.createElement('style')
+    const style = document.createElement('style');
     style.textContent = `
-      * {
-        transition: background-color 0.1s ease, color 0.1s ease, border-color 0.1s ease !important;
+      :root {
+        --theme-transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s ease;
       }
-    `
-    document.head.appendChild(style)
-    return () => document.head.removeChild(style)
-  }, [])
+      body, .ant-* {
+        transition: var(--theme-transition) !important;
+      }
+    `;
+    document.head.appendChild(style);
 
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+};
+
+const ThemeSwitcher: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { theme: storedTheme, systemTheme, setSystemTheme } = useThemeStore();
+  const currentTheme = storedTheme === 'system' ? systemTheme : storedTheme;
+
+  // 应用 CSS 过渡效果
+  useSmoothTransition();
+
+  // 生成主题配置
+  const themeConfig = useMemo(
+    () => createThemeConfig(currentTheme === 'dark'),
+    [currentTheme]
+  );
+
+  // 系统主题监听（优化内存管理）
   useEffect(() => {
-    // 初始化系统主题监听
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    mediaQuery.addEventListener('change', (e) => {
-      useThemeStore.getState().setSystemTheme(e.matches ? 'dark' : 'light')
-    })
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    // 首次加载时应用主题
-    return applyThemeToDOM(
-      useThemeStore.getState().theme === 'system'
-        ? useThemeStore.getState().systemTheme
-        : useThemeStore.getState().theme,
-    )
-  }, [])
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? 'dark' : 'light');
+    };
+
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+  }, [setSystemTheme]);
+
+  // 同步 Tailwind 暗黑模式
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+  }, [currentTheme]);
 
   return (
-    <ConfigProvider componentSize={'large'} theme={currentTheme === 'dark' ? darkTheme : lightTheme}>
-      {/* 同时应用 Tailwind 主题类 */}
-      <div className={currentTheme === 'dark' ? 'dark' : ''}>{children}</div>
+    <ConfigProvider
+      componentSize="large"
+      theme={themeConfig}
+      // 统一设置组件类名前缀（可选）
+      prefixCls="my-app"
+    >
+      {children}
     </ConfigProvider>
-  )
-}
+  );
+};
 
-export default ThemeSwitcher
+export default ThemeSwitcher;

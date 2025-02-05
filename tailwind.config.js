@@ -1,13 +1,13 @@
 // tailwind.config.js
 module.exports = {
+  darkMode: 'class',
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        // 同步 Ant Design 主色
         primary: {
-          DEFAULT: '#1890ff', // light mode
-          dark: '#177ddc', // dark mode
+          DEFAULT: '#004cffeb', // light mode
+          dark: '#4f39f6', // dark mode
         },
       },
     },

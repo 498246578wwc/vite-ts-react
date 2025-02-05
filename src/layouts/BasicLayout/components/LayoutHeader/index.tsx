@@ -39,32 +39,38 @@ const LayoutHeader = () => {
     }
   }
   return (
-    <nav className="bg-white shadow dark:bg-gray-900">
-      <div className="container flex items-center p-4 mx-auto text-gray-600 capitalize dark:text-gray-300">
-        <Button
-          type="text"
-          className="mr-4"
-          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          onClick={() => toggleCollapsed(!collapsed)}
-        />
-        {/* 右侧内容容器 */}
-        <div className="flex items-center ml-auto">
-          <Header />
+    <div className="bg-white shadow dark:bg-gray-900">
+      <div className="flex items-center justify-between p-4 w-full text-gray-600 capitalize dark:text-gray-300">
+        {/* 左侧菜单按钮 */}
+        <div className="flex items-center flex-shrink-0">
+          <Button
+            type="text"
+            className="mr-4"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => toggleCollapsed(!collapsed)}
+          />
+        </div>
+        {/* 右侧header容器 */}
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          {/* 自动撑满的中间区域 */}
+          <div className="flex-1 min-w-0 flex justify-end">
+            <Header /> {/* 假设 Header 需要靠右显示 */}
+          </div>
           <Dropdown menu={{ items, onClick }} placement="bottom">
-            <div className="flex items-center gap-x-2 ml-6">
+            <div className="flex items-center gap-x-2 cursor-pointer flex-shrink-0">
               <img
-                className="object-cover w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full object-cover"
                 src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
                 alt="User avatar"
               />
-              <div>
-                <h1 className="text-base font-semibold text-gray-700 capitalize dark:text-white">Mia John</h1>
-              </div>
+              <span className="font-semibold text-gray-700 dark:text-white">
+                Mia John
+              </span>
             </div>
           </Dropdown>
         </div>
       </div>
-    </nav>
+    </div>
   )
 }
 
