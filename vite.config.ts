@@ -37,14 +37,6 @@ export default ({ command, mode }: ConfigEnv) => {
       port: 3002,
       host: true,
       open: true,
-      //自定义代理---解决跨域
-      proxy: {
-        // 选项写法
-        '/api': {
-          target: 'localhost:6002',
-          changeOrigin: true,
-        },
-      },
     },
     css: {
       // css预处理器

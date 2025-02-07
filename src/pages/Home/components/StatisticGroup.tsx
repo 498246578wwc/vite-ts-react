@@ -5,81 +5,40 @@ const formatter: StatisticProps['formatter'] = (value) => <CountUp end={value as
 
 const StatisticGroup = () => {
   return (
-    <Card>
-      <Row className="justify-around">
-        <Col
-          className="m-2"
-          xs={{ flex: '100%' }}
-          sm={{ flex: '100%' }}
-          md={{ flex: '46%' }}
-          lg={{ flex: '46%' }}
-          xl={{ flex: '23%' }}
-        >
-          <div className="p-8 rounded-lg bg-linear-to-r from-cyan-600 to-blue-900">
-            <Statistic
-              title={<span className="text-white">总客户</span>}
-              value={34555}
-              precision={2}
-              valueStyle={{ color: '#fff', fontWeight: '700' }}
-              formatter={formatter}
-            />
-          </div>
-        </Col>
-        <Col
-          className="m-2"
-          xs={{ flex: '100%' }}
-          sm={{ flex: '100%' }}
-          md={{ flex: '46%' }}
-          lg={{ flex: '46%' }}
-          xl={{ flex: '23%' }}
-        >
-          <div className="p-8 rounded-lg bg-linear-210 from-purple-700 to-pink-600">
-            <Statistic
-              title={<span className="text-white">总销量</span>}
-              value={65433}
-              precision={2}
-              valueStyle={{ color: '#fff', fontWeight: '700' }}
-              formatter={formatter}
-            />
-          </div>
-        </Col>
-        <Col
-          className="m-2"
-          xs={{ flex: '100%' }}
-          sm={{ flex: '100%' }}
-          md={{ flex: '46%' }}
-          lg={{ flex: '46%' }}
-          xl={{ flex: '23%' }}
-        >
-          <div className="p-8 rounded-lg bg-linear-to-t from-sky-800 to-indigo-400">
-            <Statistic
-              title={<span className="text-white">总利润</span>}
-              value={775664}
-              precision={2}
-              valueStyle={{ color: '#fff', fontWeight: '700' }}
-              formatter={formatter}
-              prefix={'￥'}
-            />
-          </div>
-        </Col>
-        <Col
-          className="m-2"
-          xs={{ flex: '100%' }}
-          sm={{ flex: '100%' }}
-          md={{ flex: '46%' }}
-          lg={{ flex: '46%' }}
-          xl={{ flex: '23%' }}
-        >
-          <div className="p-8 rounded-lg bg-linear-to-bl from-violet-900 to-fuchsia-500">
-            <Statistic
-              title={<span className="text-white">订单数</span>}
-              value={75543}
-              precision={2}
-              valueStyle={{ color: '#fff', fontWeight: '700' }}
-              formatter={formatter}
-            />
-          </div>
-        </Col>
+    <Card bodyStyle={{ padding: 16 }}> {/* 统一内边距 */}
+      <Row gutter={[16, 16]} className="w-full"> {/* 使用相同gutter */}
+        {[
+          { title: '总客户', value: 34555, bg: 'bg-gradient-to-r from-cyan-600 to-blue-900' },
+          { title: '总销量', value: 65433, bg: 'bg-gradient-to-r from-purple-700 to-pink-600' },
+          { title: '总利润', value: 775664, prefix: '￥', bg: 'bg-gradient-to-r from-sky-800 to-indigo-400' },
+          { title: '订单数', value: 75543, bg: 'bg-gradient-to-r from-violet-900 to-fuchsia-500' }
+        ].map((item, index) => (
+          <Col
+            key={index}
+            xs={24}
+            sm={24}
+            md={12}
+            lg={12}
+            xl={6}
+            className="flex" /* 保持布局一致 */
+          >
+            <div className={`${item.bg} p-6 rounded-lg w-full flex-1`}> {/* 统一元素高度 */}
+              <Statistic
+                title={<span className="text-white text-sm md:text-base">{item.title}</span>}
+                value={item.value}
+                precision={2}
+                valueStyle={{
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: '1.25rem' // 统一字体大小
+                }}
+                formatter={formatter}
+                prefix={item.prefix}
+                className="whitespace-nowrap" // 防止文字换行
+              />
+            </div>
+          </Col>
+        ))}
       </Row>
     </Card>
   )

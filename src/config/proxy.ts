@@ -2,7 +2,7 @@ export default {
   isRequestProxy: false,
   development: {
     // 开发环境接口请求
-    host: 'localhost:6002',
+    host: 'localhost:6003',
     // 开发环境 cdn 路径
     cdn: '',
   },

@@ -17,9 +17,10 @@ interface CustomRequestConfig extends AxiosRequestConfig {
   retryTimes?: number // 重试次数
 }
 
+
 // 创建 axios 实例
 const instance: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:6002', // 从环境变量中获取 baseURL
+  baseURL: `http://192.168.110.129:2102`, // 从环境变量中获取 baseURL
   timeout: 10000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
